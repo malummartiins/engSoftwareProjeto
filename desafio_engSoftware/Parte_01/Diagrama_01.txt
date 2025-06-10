@@ -1,0 +1,33 @@
+@startuml
+actor Usuario
+boundary UsuarioBoundary
+control EmprestimoControl
+entity Emprestimo
+entity ReservaService
+entity PixService
+
+Usuario -> UsuarioBoundary : solicitarRenovacao()
+UsuarioBoundary -> EmprestimoControl : renovarEmprestimo()
+EmprestimoControl -> ReservaService : possuiReserva(emp)
+ReservaService --> EmprestimoControl : true/false
+
+alt possui reserva
+    EmprestimoControl -> UsuarioBoundary : informarNaoPodeRenovar()
+else sem reserva
+    EmprestimoControl -> Emprestimo : estaEmAtraso()
+    Emprestimo --> EmprestimoControl : true/false
+
+    alt esta em atraso
+        EmprestimoControl -> UsuarioBoundary : informarMultaOuEntrega()
+
+        UsuarioBoundary -> EmprestimoControl : desejaPagarMulta()
+        EmprestimoControl -> PixService : gerarCodigoPix()
+        PixService --> EmprestimoControl : codigoPix
+        EmprestimoControl -> UsuarioBoundary : exibirCodigoPix(codigoPix)
+
+        EmprestimoControl -> Emprestimo : renovar()
+    else nao esta em atraso
+        EmprestimoControl -> Emprestimo : renovar()
+    end
+end
+@enduml

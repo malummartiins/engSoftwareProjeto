@@ -1,0 +1,49 @@
+@startuml
+interface FreteStrategy {
+  + calcular(Endereco, double[], double) : double
+}
+
+class EmpresaAFrete implements FreteStrategy
+class EmpresaBFrete implements FreteStrategy
+class EmpresaCFrete implements FreteStrategy
+class EmpresaDFrete implements FreteStrategy
+
+class Emprestimo {
+  - tipoFrete : int
+  - estrategiaFrete : FreteStrategy
+  - exemplar : Exemplar
+  - usuario : Usuario
+  + calcularFrete() : double
+  + setEstrategiaFrete(FreteStrategy) : void
+}
+
+class Exemplar {
+  - codigo : int
+  - dimensoes : double[]
+  - peso : double
+  + getDimensoes() : double[]
+  + getPeso() : double
+}
+
+class Usuario {
+  - codigo : int
+  - nome : String
+  - endereco : Endereco
+  + getEndereco() : Endereco
+}
+
+class Endereco {
+  - numero : int
+  - rua : String
+  - cidade : String
+}
+
+FreteStrategy <|.. EmpresaAFrete
+FreteStrategy <|.. EmpresaBFrete
+FreteStrategy <|.. EmpresaCFrete
+FreteStrategy <|.. EmpresaDFrete
+
+Emprestimo --> Exemplar
+Emprestimo --> Usuario
+Usuario --> Endereco
+@enduml

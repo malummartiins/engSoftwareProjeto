@@ -1,0 +1,16 @@
+@startuml
+[*] --> Disponivel
+
+Disponivel --> Emprestado : retiradaPorSocio
+Emprestado --> Atrasado : dataEntregaVencida
+Atrasado --> Atrasado : enviarEmailNotificacao
+
+Emprestado --> Reservado : devolvidoComReserva
+Emprestado --> Disponivel : devolvidoSemReserva
+Atrasado --> Reservado : devolvidoComReserva
+Atrasado --> Disponivel : devolvidoSemReserva
+
+Disponivel --> EmInspecao : aCada15Emprestimos
+EmInspecao --> Reservado : possuiReserva
+EmInspecao --> Disponivel : semReserva
+@enduml
